@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article — JA Today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00a651; --gold: #fed100;
+    --glass: rgba(255,255,255,0.07);
+    --glass-border: rgba(255,255,255,0.13);
+    --text: #f0ede8; --muted: rgba(240,237,232,0.5);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #0d0f13; color: var(--text); min-height: 100vh; }
+
+  .bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,166,81,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(254,209,0,0.08) 0%, transparent 55%),
+      #0d0f13;
+  }
+
+  .page { position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 2rem;
+    border-bottom: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px); background: rgba(13,15,19,0.8);
+    position: sticky; top: 0; z-index: 50;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.08em;
+    text-decoration: none; color: var(--text);
+  }
+  .nav-logo .ja { color: var(--gold); }
+
+  .nav-back {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); text-decoration: none;
+    display: flex; align-items: center; gap: 0.4rem; transition: color 0.15s;
+  }
+  .nav-back:hover { color: var(--text); }
+
+  /* ARTICLE */
+  .article-wrap {
+    max-width: 680px; margin: 3rem auto; padding: 0 2rem 6rem;
+    animation: fadein 0.5s ease both;
+  }
+
+  @keyframes fadein { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform:none; } }
+
+  .article-cat {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--green);
+    display: flex; align-items: center; gap: 0.4rem; margin-bottom: 1rem;
+  }
+  .article-cat::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); display:inline-block; }
+
+  .article-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    line-height: 1.18; margin-bottom: 1rem; font-weight: 400;
+  }
+
+  .article-excerpt {
+    font-size: 1.1rem; line-height: 1.7; color: rgba(240,237,232,0.65);
+    font-style: italic; margin-bottom: 1.5rem; font-weight: 300;
+    border-left: 3px solid var(--green); padding-left: 1rem;
+  }
+
+  .article-meta {
+    display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted);
+    letter-spacing: 0.05em; padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--glass-border); margin-bottom: 1.5rem;
+  }
+
+  .meta-source { color: var(--gold); font-weight: 500; }
+
+  .article-image {
+    width: 100%; border-radius: 12px; margin-bottom: 2rem;
+    aspect-ratio: 16/9; object-fit: cover; display: block;
+  }
+
+  .article-image-placeholder {
+    width: 100%; border-radius: 12px; margin-bottom: 2rem;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, rgba(0,166,81,0.18) 0%, rgba(254,209,0,0.07) 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .article-image-placeholder span {
+    font-family: 'Bebas Neue', sans-serif; font-size: 4rem; letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.05);
+  }
+
+  .article-body {
+    font-size: 1rem; line-height: 1.85; font-weight: 300;
+    color: rgba(240,237,232,0.82);
+  }
+
+  .article-body p { margin-bottom: 1.2rem; }
+
+  .external-link {
+    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1.5rem;
+    padding: 0.55rem 1.2rem; border: 1.5px solid var(--green); border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--green); text-decoration: none;
+    transition: all 0.18s;
+  }
+  .external-link:hover { background: var(--green); color: #fff; }
+
+  /* SUBSCRIBE TEASER */
+  .subscribe-bar {
+    margin-top: 3rem; padding: 1.5rem;
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px;
+    backdrop-filter: blur(12px); text-align: center;
+  }
+  .subscribe-bar h3 {
+    font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 0.4rem;
+  }
+  .subscribe-bar p {
+    font-size: 0.82rem; color: var(--muted); margin-bottom: 1rem; font-style: italic;
+  }
+  .subscribe-btn {
+    padding: 0.5rem 1.4rem; border-radius: 100px;
+    background: var(--gold); color: #000; border: none;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    opacity: 0.5;
+    position: relative;
+  }
+  .subscribe-btn::after {
+    content: 'Coming Soon'; position: absolute; bottom: calc(100% + 6px); left: 50%;
+    transform: translateX(-50%); background: #222; color: var(--text);
+    font-size: 0.58rem; padding: 0.25rem 0.6rem; border-radius: 4px;
+    white-space: nowrap; opacity: 0; transition: opacity 0.15s; pointer-events: none;
+  }
+  .subscribe-btn:hover::after { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .article-wrap { padding: 0 1rem 4rem; margin-top: 2rem; }
+    nav { padding: 0.8rem 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="page">
+
+  <nav>
+    <a class="nav-back" href="ja-today.html">← Back to feed</a>
+    <a class="nav-logo" href="ja-today.html"><span class="ja">JA</span> TODAY</a>
+    <div style="width:80px;"></div><!-- spacer -->
+  </nav>
+
+  <div class="article-wrap" id="article-wrap">
+    <p style="color:var(--muted); font-style:italic;">Loading article...</p>
+  </div>
+
+</div>
+
+<script>
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtDate(d) {
+  if (!d) return 'Today';
+  try { return new Date(d + 'T12:00:00').toLocaleDateString('en-JM', { weekday:'long', month:'long', day:'numeric', year:'numeric' }); }
+  catch(_) { return d; }
+}
+
+function render() {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get('data');
+
+  if (!raw) {
+    document.getElementById('article-wrap').innerHTML = `<p style="color:var(--muted)">No article found. <a href="ja-today.html" style="color:var(--green)">Go back to the feed.</a></p>`;
+    return;
+  }
+
+  let a;
+  try { a = JSON.parse(decodeURIComponent(raw)); }
+  catch(_) {
+    document.getElementById('article-wrap').innerHTML = `<p style="color:var(--muted)">Could not load article. <a href="ja-today.html" style="color:var(--green)">Go back.</a></p>`;
+    return;
+  }
+
+  document.title = `${a.title} — JA Today`;
+
+  const imgHTML = a.image
+    ? `<img class="article-image" src="${esc(a.image)}" alt="" onerror="this.outerHTML='<div class=article-image-placeholder><span>JA TODAY</span></div>'">`
+    : `<div class="article-image-placeholder"><span>JA TODAY</span></div>`;
+
+  // Body: use a.body if present, otherwise expand excerpt into paragraphs
+  const bodyText = a.body || a.excerpt || '';
+  const bodyHTML = bodyText.split('\n').filter(p => p.trim()).map(p => `<p>${esc(p)}</p>`).join('');
+
+  document.getElementById('article-wrap').innerHTML = `
+    ${a.category ? `<div class="article-cat">${esc(a.category)}</div>` : ''}
+    <h1 class="article-title">${esc(a.title)}</h1>
+    ${a.excerpt ? `<p class="article-excerpt">${esc(a.excerpt)}</p>` : ''}
+    <div class="article-meta">
+      ${a.author ? `<span>By ${esc(a.author)}</span>` : ''}
+      ${a.source ? `<span class="meta-source">${esc(a.source)}</span>` : ''}
+      ${a.date ? `<span>${fmtDate(a.date)}</span>` : ''}
+    </div>
+    ${imgHTML}
+    <div class="article-body">${bodyHTML}</div>
+    ${a.url ? `<a class="external-link" href="${esc(a.url)}" target="_blank" rel="noopener">Read full story on ${esc(a.source||'source')} ↗</a>` : ''}
+    <div class="subscribe-bar">
+      <h3>Enjoying this journalist's work?</h3>
+      <p>Subscribe to get notified every time ${esc(a.author||'this journalist')} publishes a new story.</p>
+      <button class="subscribe-btn">Subscribe to Journalist</button>
+    </div>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>
