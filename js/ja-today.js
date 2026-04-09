@@ -187,7 +187,7 @@ function renderAuthArea() {
       <button class="auth-btn" onclick="logout()">Logout</button>`;
   } else {
     area.innerHTML = `
-      <a class="auth-btn" href="login.html">Login</a>
+      <a class="auth-btn" href="index.html">Login</a>
       <a class="auth-btn primary" href="register.html">Register</a>`;
   }
 }
