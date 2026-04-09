@@ -14,7 +14,7 @@ async function login() {
   if (!email || !pass) return showError('Please fill in all fields.');
 
   try {
-    const response = await fetch('http://127.0.0.1:5000/api/login', {
+    const response = await fetch('https://itsdanithelaw.github.io/Jamaica-Today/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password: pass })
