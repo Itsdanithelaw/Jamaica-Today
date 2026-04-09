@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — JA Today</title>
+<link rel="stylesheet" href="css/admin.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="js/admin.js" defer></script>
+</head>
+
+
+
+<body>
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Toggle menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+ 
+<!-- Sidebar overlay (tap to close) -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<div class="bg"></div>
+<div class="page">
+
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="admin.html">
+      <span class="ja">JA</span> TODAY
+      <span class="admin-tag">Admin Panel</span>
+    </a>
+
+    <div class="nav-section">
+      <div class="nav-label">Content</div>
+      <button class="nav-btn active" onclick="showPanel('articles',this)"><span class="icon">📰</span> Articles</button>
+      <button class="nav-btn" onclick="showPanel('add',this)"><span class="icon">✏️</span> Add Article</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Audience</div>
+      <button class="nav-btn" onclick="showPanel('users',this)"><span class="icon">👥</span> Users</button>
+      <button class="nav-btn" onclick="showPanel('visitors',this)"><span class="icon">🌐</span> Visitors</button>
+    </div>
+
+    <div class="nav-section">
+  <div class="nav-label">Broadcast</div>
+  <button class="nav-btn" onclick="showPanel('breaking',this)">
+    <span class="icon">📡</span> Breaking News
+  </button>
+  </div>
+
+    <div class="sidebar-footer">
+  <div class="sidebar-user" id="sidebar-user">—</div>
+  <a href="ja-today.html" style="
+    display:block; text-align:center; margin-bottom:0.5rem;
+    font-family:'JetBrains Mono',monospace; font-size:0.6rem;
+    letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none; transition:color 0.15s;
+  " onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+    ← Back to JA Today
+  </a>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ARTICLES -->
+    <div class="panel active" id="panel-articles">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Articles</div>
+          <div class="page-sub">All published stories on JA Today</div>
+        </div>
+        <button class="btn btn-primary" onclick="showPanel('add', document.querySelectorAll('.nav-btn')[1])">+ New Article</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">Total Articles</div><div class="stat-value" id="stat-articles">—</div></div>
+        <div class="stat-card"><div class="stat-label">Registered Users</div><div class="stat-value" id="stat-users">—</div></div>
+        <div class="stat-card"><div class="stat-label">Unique Visitors</div><div class="stat-value" id="stat-visitors">—</div></div>
+      </div>
+
+      <div class="glass-card">
+        <h3>All Articles</h3>
+        <div class="articles-list" id="articles-list">
+          <div class="empty-msg">Loading articles...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD ARTICLE -->
+    <div class="panel" id="panel-add">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Add Article</div>
+          <div class="page-sub">Publish a new story to JA Today</div>
+        </div>
+      </div>
+      <div class="glass-card">
+        <h3>Article Details</h3>
+        <div class="form-grid">
+          <div class="field form-full"><label>Headline *</label><input type="text" id="a-title" placeholder="Article headline"></div>
+          <div class="field form-full"><label>Excerpt / Summary</label><textarea id="a-excerpt" placeholder="Short summary shown on the card..."></textarea></div>
+          <div class="field form-full"><label>Full Article Body</label><textarea id="a-body" style="min-height:160px" placeholder="Full article text. Each paragraph on a new line..."></textarea></div>
+          <div class="field"><label>Category</label><input type="text" id="a-category" placeholder="e.g. Politics"></div>
+          <div class="field"><label>Source</label><input type="text" id="a-source" placeholder="e.g. Jamaica Gleaner"></div>
+          <div class="field"><label>Author</label><input type="text" id="a-author" placeholder="Author name"></div>
+          <div class="field"><label>Date</label><input type="date" id="a-date"></div>
+          <div class="field form-full"><label>Image URL</label><input type="text" id="a-image" placeholder="https://..."></div>
+          <div class="field form-full"><label>Article URL (links to original source)</label><input type="text" id="a-url" placeholder="https://..."></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="addArticle()">Publish Article</button>
+          <button class="btn btn-ghost" onclick="clearForm()">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="panel" id="panel-users">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Users</div>
+          <div class="page-sub">Everyone who has registered on JA Today</div>
+        </div>
+      </div>
+      <div class="glass-card">
+        <h3>Registered Users</h3>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
+          <tbody id="users-body"><tr><td colspan="4" class="empty-msg">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VISITORS -->
+    <div class="panel" id="panel-visitors">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Visitors</div>
+          <div class="page-sub">IP addresses that have visited the site</div>
+        </div>
+      </div>
+      <div class="glass-card">
+        <h3>Visitor Log</h3>
+        <div id="visitors-list"><div class="empty-msg">Loading...</div></div>
+      </div>
+    </div>
+<!-- BREAKING NEWS PANEL -->
+<div class="panel" id="panel-breaking">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Breaking News</div>
+      <div class="page-sub">Push a live alert to the bottom of the reader</div>
+    </div>
+  </div>
+
+  <div class="glass-card">
+    <h3>Current Broadcast</h3>
+    <div id="breaking-status" style="
+      font-family:'JetBrains Mono',monospace; font-size:0.72rem;
+      color:var(--muted); margin-bottom:1.2rem; padding:0.75rem 1rem;
+      background:var(--input-bg); border:1px solid var(--glass-border);
+      border-radius:10px;
+    ">No active breaking news broadcast.</div>
+
+    <div class="field" style="margin-bottom:1rem;">
+      <label>Breaking News Message</label>
+      <textarea id="breaking-msg" style="min-height:80px" 
+        placeholder="Type your breaking news message here..."></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="pushBreaking()">📡 Go Live</button>
+      <button class="btn btn-danger" onclick="clearBreaking()">✕ Clear Broadcast</button>
+    </div>
+
+    <div style="
+      margin-top:1.5rem; padding:1rem;
+      background:var(--input-bg); border:1px solid var(--glass-border);
+      border-radius:10px; font-family:'JetBrains Mono',monospace;
+      font-size:0.65rem; color:var(--muted); line-height:1.8;
+    ">
+      <div style="color:var(--gold); margin-bottom:0.4rem; font-size:0.68rem;">HOW IT WORKS</div>
+      Once you hit Go Live the banner appears at the bottom of JA Today for all visitors.<br>
+      It runs for exactly 3 minutes then disappears automatically.<br>
+      To run it again just hit Go Live — you can update the message each time.
+    </div>
+  </div>
+</div>
+  </main>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Edit Article</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-grid">
+      <input type="hidden" id="e-id">
+      <div class="field form-full"><label>Headline *</label><input type="text" id="e-title"></div>
+      <div class="field form-full"><label>Excerpt</label><textarea id="e-excerpt"></textarea></div>
+      <div class="field form-full"><label>Body</label><textarea id="e-body" style="min-height:140px"></textarea></div>
+      <div class="field"><label>Category</label><input type="text" id="e-category"></div>
+      <div class="field"><label>Source</label><input type="text" id="e-source"></div>
+      <div class="field"><label>Author</label><input type="text" id="e-author"></div>
+      <div class="field"><label>Date</label><input type="date" id="e-date"></div>
+      <div class="field form-full"><label>Image URL</label><input type="text" id="e-image"></div>
+      <div class="field form-full"><label>Article URL</label><input type="text" id="e-url"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+</body>
+</html>

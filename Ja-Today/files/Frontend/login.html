@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — JA Today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/auth.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="js/login.js" defer></script>
+
+
+
+
+</head>
+<body>
+<div class="bg"></div>
+<div class="page">
+  <a class="logo" href="login.html"><span class="ja">JA</span> TODAY</a>
+  <div class="logo-sub">Welcome back</div>
+
+  <div class="card">
+    <h2>Log In</h2>
+    <p>Good to see you again. Jump back into the feed.</p>
+
+    <div class="error" id="error-msg"></div>
+
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="f-email" placeholder="you@email.com">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="f-pass" placeholder="Your password">
+    </div>
+
+    <button class="submit-btn" onclick="login()">Log In</button>
+
+    <div class="alt-link">Don't have an account? <a href="register.html">Register</a></div>
+  </div>
+
+</div>
+
+
+</body>
+</html>
